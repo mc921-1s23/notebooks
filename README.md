@@ -77,22 +77,12 @@ about this project are in the [Fifth Project][P5] notebook.
 
 ## Sixth Project: Data Flow Analysis & Optimization
 
-In this sixth project, you will do some analysis and optimizations in uCIR.
+In this last project, you will do some analysis and optimizations in uCIR.
 First, you will implement the Reaching Definitions Analysis followed by the
 Constant Propagation Optimization. Then you will implement the Liveness Analysis
 followed by the Dead Code Optimization. Finally, you will implement an
 optimization called CFG Simplify. Details about this project are in the
 [Sixth Project][P6] notebook.
-
-## Seventh Project: LLVM IR Code Generation
-
-In this last project, you're going to translate the optimized SSA intermediate
-representation uCIR into LLVM IR, the intermediate representation of LLVM that
-is partially specified in [LLVM Primer][Primer]. LLVM is a set of
-production-quality reusable libraries for building compilers. LLVM separates
-computer architectures from language issues and simplifies the design and
-portability of new compilers. Details about this project are in the
-[Seventh Project][P7] notebook.
 
 # Readings
 
@@ -131,9 +121,7 @@ sharing and copying is not allowed and will be considered fraud.
 [P4]: ./P4-Semantic.ipynb
 [P5]: ./P5-CodeGeneration.ipynb
 [P6]: ./P6-Dataflow.ipynb
-[P7]: ./P7-LLVM-IR.ipynb
 [uC]: ./doc/uC_Grammar.ipynb
-[Primer]: ./doc/llvm_primer.ipynb
 [PLY]: http://www.dabeaz.com/ply/
 [lex/yacc]: http://dinosaur.compilertools.net/
 [IR]: https://llvm.org/docs/index.html
