@@ -4,6 +4,11 @@
 # This is the main program for the uc compiler, which just
 # invokes the different stages of the compiler proper.
 #
+# Copyright (c) 2019-2022, Marcio M Pereira. All rights reserved.
+#
+# This software is provided by the author "as is", without any warranties.
+# Redistribution and use in source form with or without modification are
+# permitted, but the source code must retain the above copyright notice.
 # ============================================================
 
 import sys
@@ -14,7 +19,6 @@ from uc.uc_sema import Visitor
 from uc.uc_code import CodeGenerator
 from uc.uc_analysis import DataFlow
 from uc.uc_interpreter import Interpreter
-from uc.uc_llvm import LLVMCodeGenerator
 
 """
 One of the most important (and difficult) parts of writing a compiler
@@ -161,17 +165,6 @@ class Compiler:
         if not self.args.yaml and self.opt_file is not None:
             self.opt.show(buf=self.opt_file)
 
-    def _llvm(self):
-        self.llvm = LLVMCodeGenerator(self.args.cfg)
-        self.llvm.visit(self.ast)
-        if not self.args.yaml and self.llvm_file is not None:
-            self.llvm.save_ir(self.llvm_file)
-        if self.run:
-            if self.args.llvm_opt:
-                self.llvm.execute_ir(self.args.llvm_opt, self.llvm_opt_file)
-            else:
-                self.llvm.execute_ir(self.args.llvm_opt, self.llvm_file)
-
     def _do_compile(self):
         """ Compiles the code to the given source file. """
         self._parse()
@@ -181,8 +174,6 @@ class Compiler:
             self._codegen()
             if self.args.opt:
                 self._opt()
-            if self.args.llvm:
-                self._llvm()
 
     def compile(self):
         """ Compiles the given  filename """
@@ -222,20 +213,6 @@ class Compiler:
             self.opt_file = open(opt_filename, 'w')
             open_files.append(self.opt_file)
 
-        self.llvm_file = None
-        if self.args.llvm and not self.args.yaml:
-            llvm_filename = filename[:-3] + '.ll'
-            sys.stderr.write("Outputting the LLVM IR to %s.\n" % llvm_filename)
-            self.llvm_file = open(llvm_filename, 'w')
-            open_files.append(self.llvm_file)
-
-        self.llvm_opt_file = None
-        if self.args.llvm_opt and not self.args.yaml:
-            llvm_opt_filename = filename[:-3] + '.opt.ll'
-            sys.stderr.write("Outputting the optimized LLVM IR to %s.\n" % llvm_opt_filename)
-            self.llvm_opt_file = open(llvm_opt_filename, 'w')
-            open_files.append(self.llvm_opt_file)
-
         source = open(filename, 'r')
         self.code = source.read()
         source.close()
@@ -247,7 +224,7 @@ class Compiler:
             self._do_compile()
             if errors_reported():
                 sys.stderr.write("{} error(s) encountered.".format(errors_reported()))
-            elif not self.args.llvm:
+            else:
                 if self.args.opt:
                     speedup = len(self.gencode) / len(self.optcode)
                     sys.stderr.write("default = %d, optimized = %d, speedup = %.2f\n" %
@@ -276,9 +253,6 @@ if __name__ == '__main__':
     parser.add_argument("-c", "--cfg", help="show the CFG for each function in pdf format", action='store_true')
     parser.add_argument("-o", "--opt", help="optimize the uCIR with const prop and dce", action='store_true')
     parser.add_argument("-v", "--verbose", help="print in the stderr some data analysis informations", action='store_true')
-    parser.add_argument("-l", "--llvm", help="generate LLVM IR code in the 'filename'.ll", action='store_true')
-    parser.add_argument("-p", "--llvm-opt", choices=['ctm', 'dce', 'cfg', 'all'],
-                        help="specify which llvm pass optimizations is enabled")
     args = parser.parse_args()
 
     retval = Compiler(args).compile()
