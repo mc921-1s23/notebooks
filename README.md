@@ -84,6 +84,16 @@ followed by the Dead Code Optimization. Finally, you will implement an
 optimization called CFG Simplify. Details about this project are in the
 [Sixth Project][P6] notebook.
 
+## Seventh Project (optional): LLVM IR Code Generation
+
+In this last project, you're going to translate the optimized SSA intermediate
+representation uCIR into LLVM IR, the intermediate representation of LLVM that
+is partially specified in [LLVM Primer](./doc/llvm_primer.ipynb). LLVM is a set
+of production-quality reusable libraries for building compilers. LLVM separates
+computer architectures from language issues and simplifies the design and
+portability of new compilers. Details about this project are in the
+[Seventh Project](./P7-LLVM-IR.ipynb) notebook.
+
 # Readings
 
 The course website is loaded with resources for this course. There, you will
