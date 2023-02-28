@@ -77,7 +77,7 @@ about this project are in the [Fifth Project][P5] notebook.
 
 ## Sixth Project: Data Flow Analysis & Optimization
 
-In this last project, you will do some analysis and optimizations in uCIR.
+In this sixth project, you will do some analysis and optimizations in uCIR.
 First, you will implement the Reaching Definitions Analysis followed by the
 Constant Propagation Optimization. Then you will implement the Liveness Analysis
 followed by the Dead Code Optimization. Finally, you will implement an
